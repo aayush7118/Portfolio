@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aayush Bist – Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #050d1a;
+    --deep: #0a1628;
+    --mid: #0f2040;
+    --accent: #1e90ff;
+    --accent2: #00bfff;
+    --glow: rgba(30,144,255,0.18);
+    --text: #e8f4ff;
+    --muted: #7ba3cc;
+    --border: rgba(30,144,255,0.25);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--navy);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* Animated background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(30,144,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(30,144,255,0.04) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+    z-index: 0;
+    animation: gridPulse 8s ease-in-out infinite;
+  }
+
+  @keyframes gridPulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  /* Floating orbs */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+    animation: float 12s ease-in-out infinite;
+  }
+  .orb1 { width: 350px; height: 350px; background: rgba(30,144,255,0.08); top: -80px; right: -80px; animation-delay: 0s; }
+  .orb2 { width: 250px; height: 250px; background: rgba(0,191,255,0.06); bottom: 10%; left: -60px; animation-delay: 4s; }
+  .orb3 { width: 200px; height: 200px; background: rgba(30,144,255,0.05); top: 50%; right: 10%; animation-delay: 8s; }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-30px) scale(1.05); }
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(5,13,26,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: 'Orbitron', monospace;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 2px;
+    text-shadow: 0 0 20px rgba(30,144,255,0.5);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* SECTIONS */
+  section {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 100px 32px 60px;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 80px;
+  }
+
+  .hero-tag {
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.3s forwards;
+  }
+
+  .hero-name {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(38px, 7vw, 72px);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -1px;
+    color: #fff;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.5s forwards;
+  }
+
+  .hero-name span {
+    color: transparent;
+    -webkit-text-stroke: 2px var(--accent);
+    display: block;
+  }
+
+  .hero-role {
+    margin-top: 18px;
+    font-size: 20px;
+    font-weight: 300;
+    color: var(--muted);
+    letter-spacing: 1px;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.7s forwards;
+  }
+
+  .hero-role b { color: var(--accent2); font-weight: 600; }
+
+  .hero-line {
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    margin: 28px 0;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.9s forwards;
+  }
+
+  .hero-desc {
+    max-width: 520px;
+    font-size: 17px;
+    color: var(--muted);
+    line-height: 1.8;
+    opacity: 0;
+    animation: fadeUp 0.7s 1.1s forwards;
+  }
+
+  .hero-cta {
+    margin-top: 40px;
+    display: flex;
+    gap: 16px;
+    opacity: 0;
+    animation: fadeUp 0.7s 1.3s forwards;
+  }
+
+  .btn {
+    padding: 12px 28px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    border: 1px solid var(--accent);
+    box-shadow: 0 0 24px rgba(30,144,255,0.35);
+  }
+  .btn-primary:hover { box-shadow: 0 0 40px rgba(30,144,255,0.6); transform: translateY(-2px); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--border);
+  }
+  .btn-outline:hover { border-color: var(--accent); background: var(--glow); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* SECTION HEADERS */
+  .sec-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  .sec-num {
+    font-family: 'Orbitron', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 2px;
+  }
+
+  .sec-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 1px;
+  }
+
+  .sec-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+  }
+
+  /* ABOUT GRID */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .info-card {
+    background: var(--deep);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 22px;
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .info-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--accent);
+    transform: scaleY(0);
+    transition: transform 0.25s;
+    transform-origin: top;
+  }
+
+  .info-card:hover { border-color: rgba(30,144,255,0.5); transform: translateY(-3px); }
+  .info-card:hover::before { transform: scaleY(1); }
+
+  .info-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .info-val {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  /* SKILLS */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+  }
+
+  .skill-card {
+    background: var(--deep);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 22px;
+    text-align: center;
+    transition: all 0.25s;
+    cursor: default;
+  }
+
+  .skill-card:hover {
+    border-color: var(--accent);
+    background: var(--mid);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(30,144,255,0.15);
+  }
+
+  .skill-icon {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+
+  .skill-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 1px;
+  }
+
+  .skill-level {
+    margin-top: 10px;
+    height: 3px;
+    background: var(--mid);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .skill-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 2px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .skill-card:hover .skill-fill,
+  .skill-fill.visible { transform: scaleX(1); }
+
+  /* QUALIFICATIONS timeline */
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 8px; bottom: 8px;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+  }
+
+  .tl-item {
+    position: relative;
+    margin-bottom: 36px;
+    opacity: 0;
+    transform: translateX(-16px);
+    transition: all 0.5s;
+  }
+
+  .tl-item.visible { opacity: 1; transform: translateX(0); }
+
+  .tl-dot {
+    position: absolute;
+    left: -33px; top: 6px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--navy);
+    box-shadow: 0 0 10px rgba(30,144,255,0.6);
+  }
+
+  .tl-year {
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+
+  .tl-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+
+  .tl-sub {
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .cgpa-badge {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 4px 12px;
+    background: var(--glow);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 12px;
+    color: var(--accent2);
+    letter-spacing: 1px;
+  }
+
+  /* HOBBIES & LOVES */
+  .tags-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .tag {
+    padding: 10px 20px;
+    background: var(--deep);
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+    cursor: default;
+  }
+
+  .tag:hover {
+    background: var(--glow);
+    border-color: var(--accent);
+    color: var(--accent2);
+    transform: scale(1.05);
+  }
+
+  /* CONTACT */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .contact-card {
+    background: var(--deep);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: all 0.2s;
+  }
+
+  .contact-card:hover {
+    border-color: rgba(30,144,255,0.5);
+    transform: translateY(-2px);
+  }
+
+  .contact-icon {
+    width: 44px; height: 44px;
+    border-radius: 8px;
+    background: var(--glow);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .contact-label { font-size: 11px; letter-spacing: 2px; color: var(--accent); text-transform: uppercase; }
+  .contact-val { font-size: 15px; font-weight: 500; color: var(--text); }
+
+  /* FOOTER */
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 40px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+
+  footer span { color: var(--accent); }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">AB</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#hobbies">Interests</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home" style="max-width:900px;margin:0 auto;padding:80px 32px 60px;">
+  <div class="hero-tag">IT Student &amp; Future Tech Professional</div>
+  <h1 class="hero-name">
+    Aayush
+    <span>Bist</span>
+  </h1>
+  <p class="hero-role">Pursuing <b>B.Sc. CSIT</b> · Cybersecurity &amp; Networking Enthusiast</p>
+  <div class="hero-line"></div>
+  <p class="hero-desc">A passionate IT student from Bhaktapur, Nepal — building expertise in cybersecurity, programming, and networking. Driven by curiosity, inspired by CR7's dedication.</p>
+  <div class="hero-cta">
+    <a href="#contact" class="btn btn-primary">Get In Touch</a>
+    <a href="#education" class="btn btn-outline">View Qualifications</a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" style="max-width:900px;margin:0 auto;padding:80px 32px 60px;">
+  <div class="sec-header reveal">
+    <span class="sec-num">01</span>
+    <h2 class="sec-title">About Me</h2>
+    <div class="sec-line"></div>
+  </div>
+  <div class="about-grid reveal">
+    <div class="info-card">
+      <div class="info-label">Full Name</div>
+      <div class="info-val">Aayush Bist</div>
+    </div>
+    <div class="info-card">
+      <div class="info-label">Date of Birth</div>
+      <div class="info-val">24 February 2008</div>
+    </div>
+    <div class="info-card">
+      <div class="info-label">Location</div>
+      <div class="info-val">Bhaktapur, Nepal</div>
+    </div>
+    <div class="info-card">
+      <div class="info-label">Email</div>
+      <div class="info-val" style="font-size:14px;">bistaayush777@gmail.com</div>
+    </div>
+    <div class="info-card">
+      <div class="info-label">Father</div>
+      <div class="info-val">Purna Singh Bista</div>
+    </div>
+    <div class="info-card">
+      <div class="info-label">Mother</div>
+      <div class="info-val">Tulasi Bista</div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" style="max-width:900px;margin:0 auto;padding:80px 32px 60px;">
+  <div class="sec-header reveal">
+    <span class="sec-num">02</span>
+    <h2 class="sec-title">Skills &amp; Tech</h2>
+    <div class="sec-line"></div>
+  </div>
+  <div class="skills-grid reveal">
+    <div class="skill-card">
+      <div class="skill-icon">🛡️</div>
+      <div class="skill-name">Cybersecurity</div>
+      <div class="skill-level"><div class="skill-fill" style="width:60%"></div></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🌐</div>
+      <div class="skill-name">Networking</div>
+      <div class="skill-level"><div class="skill-fill" style="width:65%"></div></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🐍</div>
+      <div class="skill-name">Python</div>
+      <div class="skill-level"><div class="skill-fill" style="width:55%"></div></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🖥️</div>
+      <div class="skill-name">C Programming</div>
+      <div class="skill-level"><div class="skill-fill" style="width:50%"></div></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">📄</div>
+      <div class="skill-name">HTML</div>
+      <div class="skill-level"><div class="skill-fill" style="width:60%"></div></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">💻</div>
+      <div class="skill-name">Programming</div>
+      <div class="skill-level"><div class="skill-fill" style="width:58%"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education" style="max-width:900px;margin:0 auto;padding:80px 32px 60px;">
+  <div class="sec-header reveal">
+    <span class="sec-num">03</span>
+    <h2 class="sec-title">Education</h2>
+    <div class="sec-line"></div>
+  </div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2024 – PRESENT</div>
+      <div class="tl-title">B.Sc. CSIT</div>
+      <div class="tl-sub">New Summit College, Kathmandu, Nepal</div>
+      <div class="cgpa-badge">Currently Pursuing</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">+2 LEVEL</div>
+      <div class="tl-title">Higher Secondary Education</div>
+      <div class="tl-sub">NAST Secondary School, Dhangadhi</div>
+      <div class="cgpa-badge">CGPA: 3.4</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">SEE – 2079 BS</div>
+      <div class="tl-title">School Leaving Certificate</div>
+      <div class="tl-sub">Secondary Education Examination</div>
+      <div class="cgpa-badge">CGPA: 3.4</div>
+    </div>
+  </div>
+</section>
+
+<!-- HOBBIES & LOVES -->
+<section id="hobbies" style="max-width:900px;margin:0 auto;padding:80px 32px 60px;">
+  <div class="sec-header reveal">
+    <span class="sec-num">04</span>
+    <h2 class="sec-title">Interests &amp; Hobbies</h2>
+    <div class="sec-line"></div>
+  </div>
+  <p style="color:var(--muted);font-size:13px;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;" class="reveal">Hobbies</p>
+  <div class="tags-wrap reveal" style="margin-bottom:36px;">
+    <div class="tag">🏏 Cricket</div>
+    <div class="tag">⚽ Football</div>
+    <div class="tag">♟️ Chess</div>
+  </div>
+  <p style="color:var(--muted);font-size:13px;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;" class="reveal">Things I Love</p>
+  <div class="tags-wrap reveal">
+    <div class="tag">🏃 Outdoor Sports</div>
+    <div class="tag">⚡ CR7 – My Idol</div>
+    <div class="tag">📚 Reading Books</div>
+    <div class="tag">🔐 Cybersecurity</div>
+    <div class="tag">💡 Problem Solving</div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="max-width:900px;margin:0 auto;padding:80px 32px 80px;">
+  <div class="sec-header reveal">
+    <span class="sec-num">05</span>
+    <h2 class="sec-title">Contact</h2>
+    <div class="sec-line"></div>
+  </div>
+  <div class="contact-grid reveal">
+    <div class="contact-card">
+      <div class="contact-icon">📧</div>
+      <div>
+        <div class="contact-label">Email</div>
+        <div class="contact-val">bistaayush777@gmail.com</div>
+      </div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-icon">📍</div>
+      <div>
+        <div class="contact-label">Location</div>
+        <div class="contact-val">Bhaktapur, Nepal</div>
+      </div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-icon">🎓</div>
+      <div>
+        <div class="contact-label">College</div>
+        <div class="contact-val">New Summit College</div>
+      </div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-icon">💻</div>
+      <div>
+        <div class="contact-label">Focus</div>
+        <div class="contact-val">Cybersecurity &amp; Networking</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div style="font-family:'Orbitron',monospace;font-size:16px;color:var(--accent);margin-bottom:8px;">AAYUSH BIST</div>
+  Crafted with passion · Bhaktapur, Nepal · <span>2025</span>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        const fills = e.target.querySelectorAll('.skill-fill');
+        fills.forEach(f => f.classList.add('visible'));
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.reveal, .tl-item').forEach(el => observer.observe(el));
+  document.querySelectorAll('.skill-fill').forEach(el => {
+    const w = el.style.width;
+    el.style.width = '100%';
+    el.dataset.pct = w;
+    el.style.transform = 'scaleX(0)';
+  });
+
+  const skillObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.skill-fill').forEach(f => {
+          f.style.transform = `scaleX(${parseFloat(f.dataset.pct)/100})`;
+        });
+      }
+    });
+  }, { threshold: 0.2 });
+
+  document.querySelectorAll('.skills-grid').forEach(el => skillObs.observe(el));
+</script>
+</body>
+</html>
